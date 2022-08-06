@@ -1,0 +1,38 @@
+version: '3'
+services:
+  backend:
+    container_name: node_backend
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
+    ports:
+      - "4500:4500"
+    links:
+      - mongodb 
+    depends_on:
+      - mongodb 
+    environment:
+      WAIT_HOSTS: mongodb:27017  
+    networks:
+      - node-docker-network   
+  
+  mongodb:
+    container_name: mongodb
+    image: mongo 
+    volumes:
+      - ~/mongo:/data/db
+    ports:
+      -  "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=app_user
+      - MONGO_INITDB_ROOT_PASSWORD=app_password
+      - MONGO_INITDB_DATABASE=admin
+    networks:
+      - node-docker-network
+
+networks:
+  node-docker-network:
+    driver: bridge
+

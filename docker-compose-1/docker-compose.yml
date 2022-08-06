@@ -1,0 +1,7 @@
+version: '3'
+services:
+  web:
+    container_name: nginx_prueba
+    ports:
+      - "8083:80"
+    image: nginx
